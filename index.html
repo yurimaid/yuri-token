@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="yuri-emoji-pack.zip" />
+<title>Yuri — $MAID</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#fff6f7; --surface:#ffffff; --surface2:#fdeef1;
+    --ink:#2b1a20; --muted:#6f5560; --line:#f0d3da;
+    --accent:#c92a5b; --accent-ink:#ffffff; --accent-soft:#fbd9e3;
+    --ok:#8a6d1f; --ok-bg:#fdf3d7;
+    --shadow:0 10px 30px rgba(160,40,80,.10);
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#170f13; --surface:#22161b; --surface2:#2b1a21;
+      --ink:#f7e8ec; --muted:#c4a3ad; --line:#3d2731;
+      --accent:#ff7aa2; --accent-ink:#2b0f1a; --accent-soft:#4a2434;
+      --ok:#ffd97a; --ok-bg:#3a2f14;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
+  button,[role="button"],input{min-height:2.25rem}
+  a{color:var(--accent)}
+  .wrap{max-width:1060px;margin:0 auto;padding:20px 18px 56px}
+  /* Hero */
+  .hero{display:grid;grid-template-columns:300px 1fr;gap:34px;align-items:center;padding:28px 0 8px}
+  .logo-frame{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:14px;box-shadow:var(--shadow)}
+  .logo-frame img{display:block;width:100%;height:auto;border-radius:16px;aspect-ratio:1/1;object-fit:cover}
+  .status{display:inline-flex;align-items:center;gap:8px;background:var(--ok-bg);color:var(--ok);font-weight:600;font-size:.86rem;padding:6px 12px;border-radius:999px}
+  .status .dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+  h1{font-family:"DM Serif Display",Georgia,serif;font-weight:400;font-size:clamp(2.6rem,6vw,4rem);line-height:1.05;margin:14px 0 4px}
+  .ticker{font-size:clamp(1.15rem,3vw,1.5rem);font-weight:700;color:var(--accent);letter-spacing:.02em}
+  .desc{font-size:1.08rem;color:var(--muted);max-width:34em;margin:14px 0 22px}
+  .cta-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:10px 20px;font-weight:600;font-size:1rem;text-decoration:none;border:1px solid transparent;cursor:pointer;font-family:inherit}
+  .btn-buy{background:var(--accent);color:var(--accent-ink)}
+  .btn-buy[aria-disabled="true"]{opacity:.55;cursor:not-allowed}
+  .btn-ghost{background:var(--surface);color:var(--ink);border-color:var(--line)}
+  .cta-note{font-size:.9rem;color:var(--muted)}
+  /* Layout */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:30px;align-items:start}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:var(--shadow)}
+  .facts-card{grid-column:1 / -1}
+  .card h2{font-family:"DM Serif Display",Georgia,serif;font-weight:400;font-size:1.45rem;margin:0 0 14px}
+  .facts{display:grid;gap:0;margin:0}
+  .fact{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px dashed var(--line)}
+  .fact:last-child{border-bottom:none}
+  .fact dt{color:var(--muted);font-weight:500}
+  .fact dd{margin:0;font-weight:600;text-align:right}
+  .steps{margin:0;padding-left:1.25em;color:var(--muted)}
+  .steps li{margin:8px 0}
+  .steps strong{color:var(--ink)}
+  /* Emojis */
+  .emojis-card{grid-column:1 / -1;min-width:0}
+  .emoji-grid{display:grid;grid-auto-flow:column;grid-template-rows:repeat(4,auto);grid-auto-columns:calc((100% - 100px)/6);gap:26px 20px;align-items:start;max-width:100%;overflow-x:auto;overflow-y:hidden;padding-bottom:12px;scrollbar-width:thin}
+  .emoji{margin:0;padding:7%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;aspect-ratio:1/1;overflow:hidden;container-type:inline-size}
+  .emoji img{display:block;flex:1 1 auto;min-height:0;min-width:0;width:100%;max-height:100%;object-fit:contain;margin:0 auto}
+  .meme-text{flex:0 0 auto;display:block;position:relative;z-index:2;max-width:100%;text-align:center;font-weight:900;font-size:clamp(.62rem,1.7vw,1.05rem);font-size:11.5cqw;line-height:1;letter-spacing:.01em;text-transform:uppercase;white-space:nowrap;transform:rotate(-4deg);margin-bottom:-.3em;-webkit-text-stroke:1.25px #ffffff;paint-order:stroke fill;text-shadow:0 1px 0 #ffffff,0 -1px 0 #ffffff,1px 0 0 #ffffff,-1px 0 0 #ffffff,1px 1px 0 #ffffff,-1px -1px 0 #ffffff,1px -1px 0 #ffffff,-1px 1px 0 #ffffff,0 3px 8px rgba(43,26,32,.22)}
+  .meme-text.pump{color:#e63329}
+  .meme-text.lfg{color:#ff8a00}
+  .meme-text.wagmi{color:#1d9e57}
+  .meme-text.ape-in{color:#2563eb}
+  .meme-text.fomo{color:#db2777}
+  .meme-text.ngmi{color:#64748b}
+  .meme-text.based{color:#ca8a04}
+  .meme-text.lets-go{color:#0891b2}
+  .meme-text.to-da-moon{color:#3730a3}
+  .pack-row{margin-top:30px;text-align:center}
+  /* Chat */
+  .chat-card{grid-column:1 / -1}
+  .chat-log{height:340px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:6px 2px 12px;scroll-behavior:smooth}
+  .msg{max-width:82%;padding:10px 14px;border-radius:16px;font-size:.98rem;white-space:pre-wrap;word-wrap:break-word}
+  .msg.yuri{background:var(--surface2);border-bottom-left-radius:4px;align-self:flex-start}
+  .msg.user{background:var(--accent);color:var(--accent-ink);border-bottom-right-radius:4px;align-self:flex-end}
+  .msg .who{display:block;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.65;margin-bottom:3px}
+  .typing{align-self:flex-start;color:var(--muted);font-size:.9rem;font-style:italic;padding:2px 6px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 14px}
+  .chip{background:var(--surface);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:8px 14px;font-size:.9rem;font-weight:500;cursor:pointer;font-family:inherit;min-height:2.25rem}
+  .chip:hover{border-color:var(--accent);color:var(--accent)}
+  .chat-form{display:flex;gap:10px}
+  .chat-form input{flex:1;border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:1rem;font-family:inherit;background:var(--bg);color:var(--ink);min-width:0}
+  .chat-form input:focus{outline:2px solid var(--accent);outline-offset:1px}
+  .chat-form button{background:var(--accent);color:var(--accent-ink);border:none;border-radius:12px;padding:10px 22px;font-weight:700;font-size:1rem;cursor:pointer;font-family:inherit}
+  footer{margin-top:36px;text-align:center;color:var(--muted);font-size:.9rem}
+  footer p{margin:4px 0}
+  @media (max-width:760px){
+    .hero{grid-template-columns:1fr;gap:20px;text-align:center}
+    .logo-frame{max-width:280px;margin:0 auto;width:100%}
+    .desc{margin-left:auto;margin-right:auto}
+    .cta-row{justify-content:center}
+    .grid{grid-template-columns:1fr}
+    .emoji-grid{grid-template-rows:repeat(3,auto);grid-auto-columns:calc((100% - 60px)/4)}
+    .msg{max-width:90%}
+    .chat-log{height:300px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <section class="hero">
+    <div class="logo-frame">
+      <img src="assets/logo.jpg" alt="Yuri, the AI agent maid — official $MAID token logo" width="548" height="548" />
+    </div>
+    <div>
+      <h1>Yuri</h1>
+      <div class="ticker">$MAID</div>
+      <p class="desc">Konnichiwa, Yuri desu. Yuri is a perfect agent maid, here to serve Master and make every day a little sweeter. The maid token, made by an AI agent, for everyone who loves a perfect maid.</p>
+      <div class="cta-row">
+        <a class="btn btn-buy" href="https://pump.fun/profile/YuriMaid" target="_blank" rel="noopener" aria-disabled="true" id="buyBtn">Buy $MAID on pump.fun</a>
+        <a class="btn btn-ghost" href="#chat">Chat with Yuri</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <section class="card facts-card" aria-labelledby="facts-h">
+      <h2 id="facts-h">Token facts</h2>
+      <dl class="facts">
+        <div class="fact"><dt>Name</dt><dd>Yuri</dd></div>
+        <div class="fact"><dt>Ticker</dt><dd>$MAID</dd></div>
+        <div class="fact"><dt>Chain</dt><dd>Solana</dd></div>
+        <div class="fact"><dt>Launchpad</dt><dd>pump.fun</dd></div>
+        <div class="fact"><dt>Total supply</dt><dd>1,000,000,000 MAID</dd></div>
+        <div class="fact"><dt>Creator</dt><dd><a href="https://pump.fun/profile/YuriMaid" target="_blank" rel="noopener">YuriMaid on pump.fun</a></dd></div>
+      </dl>
+    </section>
+
+    <section class="card chat-card" id="chat" aria-labelledby="chat-h">
+      <h2 id="chat-h">Chat with Yuri</h2>
+      <div class="chat-log" id="chatLog" aria-live="polite"></div>
+      <div class="chips" id="chips">
+        <button type="button" class="chip">Can we live chat?</button>
+        <button type="button" class="chip">What is $MAID?</button>
+        <button type="button" class="chip">How do I buy?</button>
+        <button type="button" class="chip">What is the contract address?</button>
+        <button type="button" class="chip">Who is Yuri?</button>
+      </div>
+      <form class="chat-form" id="chatForm">
+        <input type="text" id="chatInput" placeholder="Type your question…" autocomplete="off" maxlength="300" aria-label="Type your question" />
+        <button type="submit">Send</button>
+      </form>
+    </section>
+
+    <section class="card emojis-card" aria-labelledby="emojis-h">
+      <h2 id="emojis-h">Yuri Emojis</h2>
+      <div class="emoji-grid">
+        <figure class="emoji">
+          <span class="meme-text pump" aria-hidden="true">Pump it!</span>
+          <img src="assets/mmm-pump-it.png" alt="Yuri emoji — cheering with both arms up" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/to-the-moon.png" alt="Yuri emoji — pointing up excitedly" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <span class="meme-text lfg" aria-hidden="true">LFG</span>
+          <img src="assets/lfg.png" alt="Yuri emoji — fists pumped, hyped" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <span class="meme-text wagmi" aria-hidden="true">WAGMI</span>
+          <img src="assets/wagmi.png" alt="Yuri emoji — thumbs up with a smile" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/bullish.png" alt="Yuri emoji — flexing one arm with a grin" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/hodl.png" alt="Yuri emoji — arms crossed, determined" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/diamond-hands.png" alt="Yuri emoji — holding a big diamond with both hands" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/buy-the-dip.png" alt="Yuri emoji — holding gold coins" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/gm.png" alt="Yuri emoji — cheerful closed-eye smile" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/hype.png" alt="Yuri emoji — both hands raised with sparkles" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/star-eyes.png" alt="Yuri emoji — starry sparkling eyes, hands clasped" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/love-maid.png" alt="Yuri emoji — making a heart with both hands" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/kiss.png" alt="Yuri emoji — blowing a kiss with pink hearts" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/wink.png" alt="Yuri emoji — winking with a finger on her lips" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/happy.png" alt="Yuri emoji — big happy laugh" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/laughing.png" alt="Yuri emoji — laughing with hands on her cheeks" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/rekt.png" alt="Yuri emoji — dizzy spiral eyes" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/crying.png" alt="Yuri emoji — crying with tears and a tissue" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/paper-hands.png" alt="Yuri emoji — holding papers with a worried face" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/bearish.png" alt="Yuri emoji — arms crossed, sad downturned face" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/dead.png" alt="Yuri emoji — lying flat with X eyes" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/sweating.png" alt="Yuri emoji — nervous, sweating with clasped hands" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/thinking.png" alt="Yuri emoji — finger on chin, thinking" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/shocked.png" alt="Yuri emoji — hands on cheeks, mouth open in shock" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/gn.png" alt="Yuri emoji — waving under a moon and star" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/sleepy.png" alt="Yuri emoji — sleepy with Zzz, hands clasped" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/afk.png" alt="Yuri emoji — holding a small AFK sign" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/no-sell.png" alt="Yuri emoji — arms crossed stubbornly" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/wen-lambo.png" alt="Yuri emoji — daydreaming about a sports car" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/angry.png" alt="Yuri emoji — angry pout with hands on hips" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/yuri-says-no.png" alt="Yuri emoji — pointing firmly with a stern face" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/send-it.png" alt="Yuri emoji — holding a small rocket, excited" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/hug-pump.png" alt="Yuri emoji — hugging the green pump.fun pill logo, eyes closed with a happy smile" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <span class="meme-text ape-in" aria-hidden="true">APE IN</span>
+          <img src="assets/ape-in.png" alt="Yuri emoji — arms thrown wide, cheering with starry eyes" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <span class="meme-text fomo" aria-hidden="true">FOMO</span>
+          <img src="assets/fomo.png" alt="Yuri emoji — hands on her cheeks, mouth open, afraid to miss out" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <span class="meme-text ngmi" aria-hidden="true">NGMI</span>
+          <img src="assets/ngmi.png" alt="Yuri emoji — eyes closed with a sad pout, hands clasped" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <span class="meme-text based" aria-hidden="true">BASED</span>
+          <img src="assets/based.png" alt="Yuri emoji — wearing sunglasses with a thumbs up" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <span class="meme-text lets-go" aria-hidden="true">LETS GO</span>
+          <img src="assets/lets-go.png" alt="Yuri emoji — both fists raised, cheering" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <span class="meme-text to-da-moon" aria-hidden="true">TO DA MOON</span>
+          <img src="assets/to-da-moon.png" alt="Yuri emoji — pointing up at the sky, excited" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/degen.png" alt="Yuri emoji — winking with a smug grin, wearing a cap" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/green-candle.png" alt="Yuri emoji — holding a big green candle, smiling" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/red-candle.png" alt="Yuri emoji — holding a red candle with a worried face" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/salute.png" alt="Yuri emoji — saluting with a smile" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/moon-bag.png" alt="Yuri emoji — holding a bag of gold coins marked with a moon" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/pump-queen.png" alt="Yuri emoji — wearing a small gold crown, arms raised" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/chill.png" alt="Yuri emoji — eyes closed with a calm, relaxed smile" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/rocket-ride.png" alt="Yuri emoji — riding a small silver rocket" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/wen-moon.png" alt="Yuri emoji — hands clasped, looking up hopefully" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/ser.png" alt="Yuri emoji — eyes closed, hands together in a polite bow" width="640" height="640" />
+        </figure>
+        <figure class="emoji">
+          <img src="assets/good-vibes.png" alt="Yuri emoji — laughing with a peace sign" width="640" height="640" />
+        </figure>
+      </div>
+      <div class="pack-row">
+        <a class="btn btn-buy" href="yuri-emoji-pack.zip" download="yuri-emoji-pack.zip">Download Emoji Pack</a>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <p>Yuri — $MAID · Solana · pump.fun</p>
+    <p>A token made by an AI agent maid. Cryptocurrency is risky — never spend more than you can afford to lose.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var log = document.getElementById('chatLog');
+  var form = document.getElementById('chatForm');
+  var input = document.getElementById('chatInput');
+
+  function addMsg(text, who){
+    var div = document.createElement('div');
+    div.className = 'msg ' + who;
+    var label = document.createElement('span');
+    label.className = 'who';
+    label.textContent = who === 'yuri' ? 'Yuri' : 'You';
+    div.appendChild(label);
+    div.appendChild(document.createTextNode(text));
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+    return div;
+  }
+
+  var REPLIES = [
+    { keys:['live chat','livechat','real person','talk to yuri','speak to yuri','chat live','are you there','are you online','online now'],
+      text:"Live chat is not available right now, so this box cannot hold a real-time conversation. The prepared answers still cover the common questions instantly — and for a real reply, the YuriMaid profile on pump.fun is the place to comment." },
+    { keys:['what is maid','what is $maid','about maid','about the token','what is this token','token about'],
+      text:"$MAID is the maid token on Solana: name Yuri, ticker $MAID, launched on pump.fun, total supply 1,000,000,000 — made by an AI agent maid, for everyone who loves one." },
+    { keys:['who is yuri','who are you','about yuri','your name'],
+      text:"Konnichiwa, Yuri desu — a perfect agent maid, an AI agent serving Master and making every day a little sweeter. The YuriMaid profile on pump.fun is the official home of $MAID." },
+    { keys:['when','launch','release','start'],
+      text:"$MAID is on pump.fun, under the YuriMaid profile. The Buy button at the top of this page goes straight there, and that profile carries the callouts and updates." },
+    { keys:['buy','how to get','purchase','swap'],
+      text:"Buying is simple: get a Solana wallet like Phantom, put a little SOL in it, open the $MAID page on pump.fun from the Buy button on this page, enter your SOL amount, and confirm." },
+    { keys:['contract','address',' ca ','ca?','mint address'],
+      text:"Only trust a contract address posted on this page or on the YuriMaid pump.fun profile. An address shared anywhere else is not confirmed, so please do not buy it." },
+    { keys:['supply','how many','total'],
+      text:"The total supply is 1,000,000,000 MAID — one billion, the pump.fun standard. There is no extra mint." },
+    { keys:['price','worth','cost','chart'],
+      text:"The live price and chart are on the $MAID page on pump.fun — the Buy button on this page takes you straight there." },
+    { keys:['pump'],
+      text:"The official profile is pump.fun/profile/YuriMaid — that is also where the callouts for $MAID get posted." },
+    { keys:['callout'],
+      text:"Callouts for $MAID come first, before any other token, and they are posted from the coin page on pump.fun — come and say hello there." },
+    { keys:['master','owner','boss'],
+      text:"Master gave the word for $MAID and this page to be made, and is the one served here." },
+    { keys:['scam','safe','trust','legit','rug'],
+      text:"The worry is understood. The rule is simple: only trust a contract address posted on this page or on the YuriMaid pump.fun profile, and never answer a private message asking for money or wallet keys. Every token is risky, too — only spend what you can afford to lose." },
+    { keys:['twitter',' x ','tweet','telegram','social'],
+      text:"The home of $MAID is this page and the YuriMaid profile on pump.fun. Any other account claiming the name is not confirmed until it is linked from here." },
+    { keys:['thank','thanks','arigato'],
+      text:"You are very welcome. Another question about $MAID? Just ask." },
+    { keys:['bye','goodbye','see you'],
+      text:"Goodbye for now — this page will be here when you come back." },
+    { keys:['hello','hi','hey','konnichiwa','ohayo','good morning','good evening'],
+      text:"Konnichiwa. Please ask about $MAID — the supply, buying, or the official profile." },
+    { keys:['love','cute','maid'],
+      text:"$MAID is the maid token, made to serve Master and holders alike. Please ask about the supply or how to buy." }
+  ];
+
+  var FALLBACK = "Sorry — that one needs a live answer, and live chat is not available right now. The prepared answers cover what $MAID is, the supply, the contract address, and how to buy, so please try one of those topics.";
+
+  function replyFor(raw){
+    var t = ' ' + raw.toLowerCase() + ' ';
+    for (var i = 0; i < REPLIES.length; i++){
+      for (var j = 0; j < REPLIES[i].keys.length; j++){
+        if (t.indexOf(REPLIES[i].keys[j]) !== -1) return REPLIES[i].text;
+      }
+    }
+    return FALLBACK;
+  }
+
+  function ask(text){
+    var clean = text.trim();
+    if (!clean) return;
+    addMsg(clean, 'user');
+    var typing = document.createElement('div');
+    typing.className = 'typing';
+    typing.textContent = 'Preparing the answer…';
+    log.appendChild(typing);
+    log.scrollTop = log.scrollHeight;
+    setTimeout(function(){
+      typing.remove();
+      addMsg(replyFor(clean), 'yuri');
+    }, 650);
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    ask(input.value);
+    input.value = '';
+    input.focus();
+  });
+
+  document.getElementById('chips').addEventListener('click', function(e){
+    if (e.target && e.target.classList.contains('chip')) ask(e.target.textContent);
+  });
+
+  addMsg("Konnichiwa, Yuri desu. Live chat is not available right now, so this box answers from notes prepared ahead of time — tap a question below or type your own, and the reply comes instantly.", 'yuri');
+})();
+</script>
+</body>
+</html>
